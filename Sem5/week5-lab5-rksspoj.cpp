@@ -7,7 +7,7 @@ using namespace std;
 vector <vector<int>> MAX_HEAPIFY (vector <vector<int>> A, int i, int n)
 {
     int left, right, largest;
-    vector <int> temp (3);
+    vector <int> temp;
 
     left = i * 2 + 1;
     right = i * 2 + 2;
@@ -65,7 +65,7 @@ vector <vector<int>> heapsortPairs (vector <vector<int>> A)
 
     for (int i = n - 1; i >= 1; i--)
     {
-        vector<int> temp (3);
+        vector<int> temp;
         temp = A[0];
         A[0] = A[i];
         A[i] = temp;
@@ -90,8 +90,19 @@ int occurs (vector <int> A, int k)
     return cnt;
 }
 
-vector<vector<int>> pairCounter (vector<int> A, int n, int c)
-{
+
+int main () {
+  
+    int n, c;
+
+    scanf("%d %d", &n, &c);
+    
+    vector <int> A (n);
+    
+    for (int i = 0; i < n; i++){
+      scanf("%d", &A[i]);
+    }
+    
     /*
     Dado un vector de enteros positivos, retorna una lista de pares ordenados cuyo primer elemento es
     el entero en la lista y el segundo elemento es su número de ocurrencias en ella.
@@ -112,56 +123,26 @@ vector<vector<int>> pairCounter (vector<int> A, int n, int c)
     }
 
    for (int i = 0; i < c; i++){
-        pairs[i][0] = numbers[i];
-        pairs[i][1] = occurs(A, numbers[i]);
-        pairs[i][2] = indexes[i];
+        pairs[i] = {numbers[i], occurs(A, numbers[i]), indexes[i]};
     }
 
-    
-    return pairs;
-}
-
-vector<int> rksSorting (vector<int> A, int n, int c){
-    
     //Ordena un vector de enteros A tal que sus elementos aparezcan en función de su número de ocurrencias y si es un elemento  menor o 
     //igual que una constante c.
     
-  vector<vector<int>> pairs = pairCounter(A, n, c);
-  pairs = heapsortPairs(pairs);
+    pairs = heapsortPairs(pairs);
 
-  vector<int> rksA;
-  int i = 0;
-  int j = 0;
-  int cnt = 0;
+    int cnt = 0;
 
-   for (int i = 0; i < c; i++)
-   {
-    for (int j = 0; j < pairs[i][1]; j++)
-        rksA.push_back(pairs[i][0]);
-   }
-
-   rksA.resize(n);
-   
-   return rksA;
-}
-
-
-int main () {
-  
-    int n, c;
-
-    scanf("%d %d", &n, &c);
-    
-    vector <int> A (n);
-    
-    for (int i = 0; i < n; i++){
-      cin >> A[i];
+    for (int i = 0; i < c; i++)
+    {
+      int j = 0;
+      while (j < pairs[i][1])
+        {
+         printf("%d ", pairs[i][0]);
+         j++;
+        }
     }
-    A = rksSorting(A, n, c);
-            
-    for (int i = 0; i < n; i++){
-      printf("%d ", A[i]);
-    }
+
     
     return 0;
 }

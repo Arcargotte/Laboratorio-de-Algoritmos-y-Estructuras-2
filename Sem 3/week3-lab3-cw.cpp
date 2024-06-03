@@ -10,7 +10,7 @@ vector <long int> merge (vector <long int> T, vector <long int> U, vector <long 
   int i = 0, j = 0;
   
   for (int k = 0; k < m + n; k++){
-    if (i != n and j != m){
+    if (i != n && j != m){
       if (U[i] < V[j]){
         T[k] = U[i];
         i++;
@@ -58,9 +58,6 @@ int scoreMaker (vector <long int> B, long long int bi){
       break;
     }
   }
-  
-  vector <long int> B_pi;
-  vector <long int> B_iq;
 
   for (int j = 0; j < i; j++){
     bi += B[j];
