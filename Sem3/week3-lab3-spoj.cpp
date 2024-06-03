@@ -10,7 +10,7 @@ vector <int> merge (vector <int> T, vector <int> U, vector <int> V, int n, int m
   int i = 0, j = 0;
   
   for (int k = 0; k < m + n; k++){
-    if (i != n and j != m){
+    if (i != n && j != m){
       if (U[i] < V[j]){
         T[k] = U[i];
         i++;
@@ -45,53 +45,64 @@ vector <int> mergeSort (vector<int> T, float n){
   }
 }
 
-int aggrcowSorter (vector <int> A, int k){
-  int n = A.size(), minD = 0, allDis, currPos, nxtPos, cowCount;
+bool isPossible(vector <int> A, int cows, int dist)
+{
+  int n = A.size();
+  int currPos = A[0];
+  int cowCount = 1;
 
-  A = mergeSort(A, n);
-
-  allDis = A[n - 1] - A[0];
-  
-  for (int dis = 1; dis <= allDis; dis++){
-    currPos = 0;
-    nxtPos = currPos + 1;
-    cowCount = k - 1;
-
-    while (cowCount != 0){
-      //printf("(%d, %d, %d, %d, %d)\n", dis, currPos, nxtPos, minD, cowCount);
-
-      if (A[nxtPos] - A[currPos] >= dis){
-        cowCount--;
-        currPos = nxtPos;
-        nxtPos++;
-      } else if (A[nxtPos] - A[currPos] < dis && nxtPos + 1 >= n){
-        return minD;
-      } else if (A[nxtPos] - A[currPos] < dis && !(nxtPos + 1 >= n)){
-        nxtPos++;
-      }
-      
+  for (int i = 1; i < n; i++)
+  {
+    if (A[i] - currPos >= dist)
+    {
+      currPos = A[i];
+      cowCount++;
     }
-    
-  minD = dis;
 
+    if (cowCount >= cows){
+      return true;
+    }
   }
+  return false;
+}
+
+int aggCowSorter (vector <int> A, int cows)
+{
+  
+  int l = 1, n = A.size(), r = A[n - 1] - A[0];
+  
+  while (l <= r)
+  {
+    int mid = floor(float(l + r) / 2);
+    
+    if (isPossible(A, cows, mid))
+    {
+      l = mid + 1;
+    }
+    else
+    {
+      r = mid - 1;
+    }
+  }
+  
+  return r;
 }
 
 int main() 
 {
-    int n, k, cases, usrin, result;
-    vector <int> A;
+    int n, k, cases, result;
     scanf("%d", &cases);
 
     while (cases > 0){
       scanf("%d %d", &n, &k);
+      vector <int> A (n);
       for (int i = 0; i < n; i++){
-        scanf("%d", &usrin);
-        A.push_back(usrin);
+        scanf("%d", &A[i]);
       }
-      result = aggrcowSorter(A, k);
-      printf("%d\n", result);
-      A.clear();
+      
+      A = mergeSort(A, n);
+      
+      printf("%d\n", aggCowSorter(A, k));
       cases--;
     }
         

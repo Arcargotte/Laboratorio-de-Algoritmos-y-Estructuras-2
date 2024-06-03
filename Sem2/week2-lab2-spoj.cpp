@@ -1,90 +1,119 @@
 #include <iostream>
 #include <vector>
-#include <utility>
-#include <algorithm>
 
 using namespace std;
 
-vector<pair<int, int>> bubbleSortVectorPairs (vector<pair<int, int>> APairs){
+int firstOcc (vector<int> A, int k)
+{
+
+  for (int j = 0; j < A.size(); j++)
+  {
+    if (A[j] == k) return j;
+  }
+  
+  return -1;
+}
+
+int countOcc (vector<int> A, int k)
+{
+    int cnt = 0;
+
+    for (int i = 0; i < A.size(); i++)
+    {
+        if (A[i] == k)
+        {
+            cnt++;
+        }
+    }
+
+    return cnt;
+}
+
+vector<vector<int>> bubbleSortPairs (vector<vector<int>> A){
     /*
     Dado un vector de enteros, usa el algoritmo bubblesort para acomodarlos en orden descendente.
     */
 
-    pair<int, int> temp;
+    vector<int> temp (3);
     int j = 0;
-    int n = APairs.size();
+    int n = A.size();
     while (n - j > 0){
         for (int i = 0; i < n - 1; i++){
-            if (APairs[i].second < APairs[i + 1].second){
-                temp = APairs[i];
-                APairs[i] = APairs[i + 1];
-                APairs[i + 1] = temp;            
+            if (A[i][1] == A[i + 1][1] && A[i][2] > A[i + 1][2]){
+                temp = A[i];
+                A[i] = A[i + 1];
+                A[i + 1] = temp;            
                 }
-        }
+            else if (A[i][1] < A[i + 1][1])
+            {
+              temp = A[i];
+              A[i] = A[i + 1];
+              A[i + 1] = temp;            
+                
+            }
+
         j += 1;
     }
-
-    return APairs;
+  }
+    return A;
 }
 
-vector<pair<int,int>> pairCounter (vector<int> A, int c){
+vector<vector<int>> pairCounter (vector<int> A, int c){
     /*
     Dado un vector de enteros positivos, retorna una lista de pares ordenados cuyo primer elemento es
     el entero en la lista y el segundo elemento es su número de ocurrencias en ella.
     */
-    vector<pair<int,int>> pairs;
-    vector<int> numbers;
+    vector<vector<int>> pairs (c, vector<int> (3));
 
-    int index = 0;
-
-    for (int i = 0; i < A.size(); i++){
-        if (count(numbers.begin(), numbers.end(), A[i]) <= 0){
-            numbers.push_back(A[i]);
-        }
-    }
-
-   for (int i = 0; i < c; i++){
-        pairs.push_back({numbers[i], count(A.begin(), A.end(), numbers[i])});  
+    for (int i = 0; i < c; i++)
+    {
+        pairs[i][0] = i + 1;
+        pairs[i][1] = countOcc(A, i + 1);
+        pairs[i][2] = firstOcc(A, i + 1);
     }
 
     return pairs;
 }
 
-vector<int> rksSorting (vector<int> A, int c){
+vector<int> rksSorting (vector<int> A, long int c){
     /*
     Ordena un vector de enteros A tal que sus elementos aparezcan en función de su número de ocurrencias y si es un elemento  menor o 
     igual que una constante c.
     */
-  vector<pair<int,int>> pairs = pairCounter(A, c);
-  pairs = bubbleSortVectorPairs(pairs);
+  vector<vector<int>> pairs = pairCounter(A, c);
+  pairs = bubbleSortPairs(pairs);
   vector<int> rksA;
 
    for (int i = 0; i < c; i++){
-    for (int j = 0; j < pairs[i].second; j++){
-        rksA.push_back(pairs[i].first);
+    for (int j = 0; j < pairs[i][1]; j++){
+        rksA.push_back(pairs[i][0]);
     }
    }
+
+   rksA.resize(A.size());
    
    return rksA;
 }
 
 int main(){
-  vector <int> A;
   
-  int n, c, input;
-
+  int n;
+  int c;
+  
   scanf("%d %d", &n, &c);
 
+  vector <int> A (n);
+  
   for (int i = 0; i < n; i++){
-      scanf("%d", &input);
-      A.push_back(input);
+      scanf("%d", &A[i]);
   }
       
   A = rksSorting(A, c);
-  
-  for (int i; i < n; i++){
+
+  for (int i; i < n - 1; i++){
     printf("%d ", A[i]);
   }
+  printf("%d", A[n - 1]);
 
   return 0;
 }
