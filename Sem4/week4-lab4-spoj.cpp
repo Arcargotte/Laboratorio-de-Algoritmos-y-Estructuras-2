@@ -5,9 +5,9 @@
 
 using namespace std;
 
-void printVector (vector <unsigned long long int> A)
+void printVector (vector <long long> A)
 {
-  unsigned long int n = A.size();
+  long long  n = A.size();
   
   for (int i = 0; i < n; i++)
     {
@@ -18,14 +18,14 @@ void printVector (vector <unsigned long long int> A)
   return;
 }
 
-vector<vector<unsigned long long int>> subMatrix(vector<vector<unsigned long long int>> A, unsigned long int n, unsigned long int x0, unsigned long int y0)
+vector<vector<long long>> subMatrix(vector<vector<long long>> A, long n, long x0, long y0)
 {
   /*
   Dada una matriz cuadrada A de dimension k, determina una submatriz cuadrada subA de dimensión n tal que n <= k a partir del elemento en la
   posicion (x0,y0) hasta el que está en la posición (x1,y1), para 0 <= x0,x1,y0,y1 < n. Para el caso
   de determinar una submatriz de dimension n = 1, retorna el elemento en la posición (x0,y0).
   */
-  vector<vector<unsigned long long int>> subA (n, vector<unsigned long long int> (n));
+  vector<vector<long long int>> subA (n, vector<long long int> (n));
 
   int i = 0;
   int j = 0;
@@ -43,9 +43,9 @@ vector<vector<unsigned long long int>> subMatrix(vector<vector<unsigned long lon
     return subA; 
 }
 
-vector<vector<unsigned long long int>> matrixAddition (vector<vector<unsigned long long int>> A, vector<vector<unsigned long long int>> B, unsigned long int n)
+vector<vector<long long>> matrixAddition (vector<vector<long long>> A, vector<vector<long long>> B, long n)
 {
-  vector<vector<unsigned long long int>> C (n, vector<unsigned long long int> (n,0));
+  vector<vector<long long>> C (n, vector<long long> (n,0));
   
   for (int i = 0; i < n; i++)
   {
@@ -58,9 +58,9 @@ vector<vector<unsigned long long int>> matrixAddition (vector<vector<unsigned lo
   return C;
 }
 
-vector<vector<unsigned long long int>> matrixSubstraction (vector<vector<unsigned long long int>> A, vector<vector<unsigned long long int>> B, unsigned long int n)
+vector<vector<long long>> matrixSubstraction (vector<vector<long long>> A, vector<vector<long long>> B, long n)
 {
-  vector<vector<unsigned long long int>> C (n, vector<unsigned long long int> (n,0));
+  vector<vector<long long>> C (n, vector<long long> (n,0));
   
   for (int i = 0; i < n; i++)
   {
@@ -73,13 +73,13 @@ vector<vector<unsigned long long int>> matrixSubstraction (vector<vector<unsigne
   return C;
 }
 
-vector<vector<unsigned long long int>> matrixGrouping (vector<vector<unsigned long long int>> C11, vector<vector<unsigned long long int>> C12, vector<vector<unsigned long long int>> C21, vector<vector<unsigned long long int>> C22, unsigned long int n)
+vector<vector<long long>> matrixGrouping (vector<vector<long long>> C11, vector<vector<long long>> C12, vector<vector<long long>> C21, vector<vector<long long>> C22, long n)
 {
   /*
   Dadas cuatro submatrices C11,C12,C21,C22 correspondientes a cuatro cuartos de una matriz cuadrada C de dimension n,
   cada una de dimension n / 2, respectivamente, retorna la matriz C.
   */
-  vector <vector <unsigned long long int>> C(n, vector <unsigned long long int>(n));
+  vector <vector <long long int>> C(n, vector <long long int>(n));
   
     int i = 0;
     int q = 0;
@@ -142,18 +142,18 @@ vector<vector<unsigned long long int>> matrixGrouping (vector<vector<unsigned lo
     return C;
 }
 
-vector<vector<unsigned long long int>> strassen (vector<vector<unsigned long long int>> A, vector<vector<unsigned long long int>> B, unsigned long int n)
+vector<vector<long long>> strassen (vector<vector<long long>> A, vector<vector<long long>> B, long n)
 {
   if (n == 1)
   {
-    vector <vector<unsigned long long int >> C (n, vector <unsigned long long int> (n));
+    vector <vector<long long >> C (n, vector <long long> (n));
     C[0][0] = A[0][0] * B[0][0];
 
     return C;
   }
   else
   {
-    vector<vector<unsigned long long int >> A11, A12, A21, A22, B11, B12, B21, B22;
+    vector<vector<long long>> A11, A12, A21, A22, B11, B12, B21, B22;
 
     A11 = subMatrix(A, n / 2, 0, 0);
 
@@ -171,7 +171,7 @@ vector<vector<unsigned long long int>> strassen (vector<vector<unsigned long lon
 
     B22 = subMatrix(B, n / 2, n / 2, n / 2);
 
-    vector<vector<unsigned long long int >> P1, P2, P3, P4, P5, P6, P7;
+    vector<vector<long long>> P1, P2, P3, P4, P5, P6, P7;
 
     P1 = strassen(A11, matrixSubstraction(B12, B22, n / 2), n / 2);
 
@@ -187,7 +187,7 @@ vector<vector<unsigned long long int>> strassen (vector<vector<unsigned long lon
 
     P7 = strassen(matrixSubstraction(A11, A21, n / 2), matrixAddition(B11, B12, n / 2), n / 2);
         
-    vector<vector<unsigned long long int >> C, C11,C12,C21,C22;
+    vector<vector<long long>> C, C11,C12,C21,C22;
 
     C11 = matrixSubstraction(matrixAddition(matrixAddition(P5, P4, n / 2), P6, n / 2), P2, n / 2);
     C12 = matrixAddition(P1, P2, n / 2);
@@ -202,14 +202,14 @@ vector<vector<unsigned long long int>> strassen (vector<vector<unsigned long lon
 
 int main()
 {
-  unsigned long int  n, i, j, d1, p1, r1, r2, m1, d2, p2, m2;
+  long  n, i, j, d1, p1, r1, r2, m1, d2, p2, m2;
   //here you need to read n, p1, d1, r1, m1, p2, d2, r2, m2 from input.
-  scanf("%lu %lu %lu %lu %lu %lu %lu %lu %lu", &n, &p1, &d1, &r1, &m1, &p2, &d2, &r2, &m2);
-  vector <vector<unsigned long long int>> A (n, vector<unsigned long long int >(n));
-  vector <vector<unsigned long long int >> B (n, vector<unsigned long long int >(n));
-  vector <vector<unsigned long long int >> C (n, vector<unsigned long long int >(n));
+  scanf("%ld %ld %ld %ld %ld %ld %ld %ld %ld", &n, &p1, &d1, &r1, &m1, &p2, &d2, &r2, &m2);
+  vector <vector<long long>> A (n, vector<long long >(n));
+  vector <vector<long long >> B (n, vector<long long >(n));
+  vector <vector<long long >> C (n, vector<long long >(n));
 
-  vector <unsigned long long int> V (n);
+  vector <long long> V (n);
   for (i=0; i<n; ++i)
       for (j=0; j<n; ++j) {
           d1 = d1 * p1 + r1;
@@ -224,7 +224,7 @@ int main()
     V[i] = 0;
     for (j=0; j<n; ++j)
         V[i] ^= C[i][j];
-    printf("%llu ", V[i]);
+    printf("%lld ", V[i]);
   }
 
   return 0;

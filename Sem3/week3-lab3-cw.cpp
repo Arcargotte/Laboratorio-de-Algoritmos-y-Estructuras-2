@@ -5,7 +5,7 @@
 
 using namespace std;
 
-vector <long long int> merge (vector <long long int> T, vector <long long int> U,vector <long long int> V, int n, int m){
+vector <long long int> merge (vector <long long> T, vector <long long> U,vector <long long> V, int n, int m){
   
   int i = 0, j = 0;
   
@@ -31,12 +31,12 @@ vector <long long int> merge (vector <long long int> T, vector <long long int> U
   return T;
 }
 
-vector <long long int> mergeSort (vector<long long int> T, float n){
+vector <long long int> mergeSort (vector<long long> T, float n){
   if (n == 1){
     return T;
   } else{
-    vector <long long int> U(T.begin(), T.begin() + floor(n / 2));
-    vector <long long int> V(T.begin() + floor(n / 2), T.end());
+    vector <long long> U(T.begin(), T.begin() + floor(n / 2));
+    vector <long long> V(T.begin() + floor(n / 2), T.end());
     
     U = mergeSort(U, floor(n / 2));
     V = mergeSort(V, ceil(n / 2));
@@ -45,7 +45,7 @@ vector <long long int> mergeSort (vector<long long int> T, float n){
   }
 }
 
-long int sumTill(vector <long long int> A, int right)
+long int sumTill(vector <long long> A, int right)
 {
   /*
   Dado un vector A de longitud n y dos indices right tal que 0<=right < n, retorna la suma de los elementos desde 0 hasta right.
@@ -60,7 +60,7 @@ long int sumTill(vector <long long int> A, int right)
   return k;
 }
 
-int findOcc(vector <long long int> A, long int k)
+int findOcc(vector <long long> A, long long k)
 {
   /*
   Dado un vector A de longitud n y un entero k, retorna el índice de la primera ocurrencia de k en A.
@@ -77,7 +77,7 @@ int findOcc(vector <long long int> A, long int k)
   return -1;
 }
 
-int collectingGame(vector <long long int> A, long long int ai)
+long long collectingGame(vector <long long> A, long long ai)
 {
   int i = findOcc(A, ai), n = A.size(), num;
   long long int bi = 0;
@@ -86,15 +86,16 @@ int collectingGame(vector <long long int> A, long long int ai)
   num = i;
   i++;
 
-  while (A[i] <= bi && i < n)
+  for (int j = i; j < n; j++)
   {
-    bi += A[i];
-    num++;
-    i++;
+    if (bi >= A[j])
+    {
+      bi += A[i];
+      num++;
+    }
   }
-
+  
   return num;
-
 }
 
 int main (){
@@ -105,18 +106,18 @@ int main (){
   
   while (cases > 0){
     scanf("%d", &n);
-    vector <long long int> A (n);
+    vector <long long> A (n);
 
     for (int i = 0; i < n; i++){
-      scanf("%ld", &A[i]);
+      scanf("%lld", &A[i]);
     }
 
-    vector <long long int> B (n);
+    vector <long long> B (n);
     B = mergeSort(A, n);
 
     for (int i = 0; i < n; i++)
     {
-      printf("%ld ", collectingGame(B, A[i]));
+      printf("%lld ", collectingGame(B, A[i]));
     }
       printf("\n");
 
